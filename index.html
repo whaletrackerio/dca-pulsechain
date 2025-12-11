@@ -349,15 +349,6 @@
       margin-bottom: 4px;
     }
 
-    .pack-badge {
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: rgba(56,189,248,0.16);
-      border: 1px solid rgba(56,189,248,0.55);
-      color: #7dd3fc;
-    }
-
     .pack-price {
       font-size: 13px;
     }
@@ -850,6 +841,88 @@
         </div>
       </section>
 
+      <!-- SELECTION DES BOTS -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Sélectionne les bots / packs que tu veux</h2>
+          <p class="section-sub">
+            Coche les bots ou packs que tu veux acheter. Le total s’affiche automatiquement.
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;">
+            <div>
+              <h3 style="font-size:13px;margin-bottom:6px;">Bots individuels (19 $ chacun)</h3>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">
+                <input type="checkbox" class="bot-select" data-id="ehex" data-label="Bot eHEX DCA" data-price="19">
+                Bot eHEX DCA
+              </label>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">
+                <input type="checkbox" class="bot-select" data-id="phex" data-label="Bot PHEX DCA" data-price="19">
+                Bot PHEX DCA
+              </label>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">
+                <input type="checkbox" class="bot-select" data-id="wpls" data-label="Bot WPLS DCA" data-price="19">
+                Bot WPLS DCA
+              </label>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">
+                <input type="checkbox" class="bot-select" data-id="plsb" data-label="Bot PLSB DCA" data-price="19">
+                Bot PLSB DCA
+              </label>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">
+                <input type="checkbox" class="bot-select" data-id="atropa" data-label="Bot ATROPA DCA" data-price="19">
+                Bot ATROPA DCA
+              </label>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">
+                <input type="checkbox" class="bot-select" data-id="loan" data-label="Bot LOAN DCA" data-price="19">
+                Bot LOAN DCA
+              </label>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">
+                <input type="checkbox" class="bot-select" data-id="inc" data-label="Bot INC DCA" data-price="19">
+                Bot INC DCA
+              </label>
+              <label style="font-size:12px;display:block;">
+                <input type="checkbox" class="bot-select" data-id="pulsex" data-label="Bot PULSEX DCA" data-price="19">
+                Bot PULSEX DCA
+              </label>
+            </div>
+
+            <div>
+              <h3 style="font-size:13px;margin-bottom:6px;">Packs (prix réduit)</h3>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">
+                <input type="checkbox" class="bot-select" data-id="pack_hex" data-label="Pack HEX Suite (3 bots)" data-price="49">
+                Pack HEX Suite (3 bots) – 49 $
+              </label>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">
+                <input type="checkbox" class="bot-select" data-id="pack_niche" data-label="Pack Niche (4 bots)" data-price="65">
+                Pack Niche (4 bots) – 65 $
+              </label>
+              <label style="font-size:12px;display:block;">
+                <input type="checkbox" class="bot-select" data-id="pack_full" data-label="Pack complet (7 bots)" data-price="99">
+                Pack complet (7 bots) – 99 $
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-top:10px;padding-top:8px;border-top:1px solid rgba(148,163,184,0.25);">
+            <p style="font-size:12px;margin-bottom:4px;">
+              <strong>Récapitulatif :</strong>
+            </p>
+            <p id="selection-list" style="font-size:12px;color:var(--muted);margin-bottom:4px;">
+              Aucun bot sélectionné pour l’instant.
+            </p>
+            <p style="font-size:12px;">
+              <strong>Total estimé :</strong>
+              <span id="selection-total">0 $</span>
+            </p>
+            <p style="font-size:11px;color:var(--muted);margin-top:6px;">
+              Quand tu m’envoies ton message sur X, précise simplement : le ou les bots cochés ci-dessus + le montant payé.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <!-- PAIEMENT + COMMANDE -->
       <section class="section" id="commander">
         <div class="section-header">
@@ -864,7 +937,6 @@
               Envoie le montant correspondant (bot individuel ou pack) sur l’adresse ci-dessous.
             </p>
             <div class="payment-addr">
-              <!-- ⚠️ REMPLACE ICI PAR TON ADRESSE PLS -->
               0x7a23b75434942ddd7d9fe19aa0ed2fea08ed57a1
             </div>
             <div class="payment-steps" style="margin-top:8px;">
@@ -882,13 +954,10 @@
 
           <div class="qr-box">
             <h3>Scan QR pour payer en PLS</h3>
-            <!-- QR code automatique basé sur ton adresse PLS -->
-            <!-- ⚠️ REMPLACE TON_ADRESSE_PLS_ICI dans l’URL CI-DESSOUS PAR TON ADRESSE RÉELLE -->
             <img
               src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=0x7a23b75434942ddd7d9fe19aa0ed2fea08ed57a1"
               alt="QR paiement PLS"
             />
-
             <p>Scanne ce QR avec ton wallet pour envoyer les PLS sur l’adresse de paiement.</p>
           </div>
         </div>
@@ -1001,6 +1070,39 @@
   <script>
     // Année dynamique dans le footer
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Sélection des bots / packs
+    const checkboxes = document.querySelectorAll(".bot-select");
+    const selectionList = document.getElementById("selection-list");
+    const selectionTotal = document.getElementById("selection-total");
+
+    function updateSelection() {
+      let items = [];
+      let total = 0;
+
+      checkboxes.forEach((cb) => {
+        if (cb.checked) {
+          const label = cb.getAttribute("data-label");
+          const price = parseFloat(cb.getAttribute("data-price") || "0");
+          items.push(label + " (" + price + " $)");
+          total += price;
+        }
+      });
+
+      if (items.length === 0) {
+        selectionList.textContent = "Aucun bot sélectionné pour l’instant.";
+      } else {
+        selectionList.textContent = items.join(" • ");
+      }
+
+      selectionTotal.textContent = total.toFixed(2) + " $";
+    }
+
+    checkboxes.forEach((cb) => {
+      cb.addEventListener("change", updateSelection);
+    });
+
+    updateSelection();
   </script>
 </body>
 </html>
