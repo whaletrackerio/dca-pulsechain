@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>DCA PulseChain Bot – Accumulation automatique PLS / HEX / ATROPA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Suite de bots DCA pour PulseChain : accumulateurs automatiques sur HEX, eHEX, PHEX, ATROPA, PLSB, LOAN, INC, WPLS. Paiement en PLS.">
+
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0b1020;
+      --card: #0f172a;
+      --accent: #6366f1;
+      --accent-soft: rgba(99,102,241,0.16);
+      --accent-strong: #a855f7;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --danger: #f97373;
+      --radius-lg: 18px;
+      --shadow-soft: 0 24px 60px rgba(0,0,0,0.65);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: radial-gradient(circle at 20% 0, #22c55e 0, #6366f1 40%, #0ea5e9 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-soft);
+      font-weight: 800;
+      font-size: 22px;
+    }
+
+    .logo-text-title {
+      font-weight: 700;
+      font-size: 19px;
+    }
+
+    .logo-text-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .header-right a {
+      color: #38bdf8;
+    }
+
+    /* HERO */
+
+    .hero {
+      background: radial-gradient(circle at top left, rgba(148,163,253,0.25), transparent 55%),
+                  linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,0.96));
+      border-radius: 28px;
+      padding: 26px 22px 26px;
+      border: 1px solid rgba(148,163,253,0.25);
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(236,72,153,0.14), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(148,163,253,0.5);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .hero-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34,197,94,0.8);
+    }
+
+    .hero-title {
+      font-size: clamp(24px, 4vw, 30px);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #22c55e, #38bdf8, #a855f7);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 18px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+
+    .hero-left p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .hero-list {
+      list-style: none;
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .hero-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      margin-bottom: 6px;
+    }
+
+    .hero-list li span {
+      font-size: 15px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white;
+      box-shadow: 0 12px 30px rgba(87,83,255,0.45);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px rgba(87,83,255,0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(15,23,42,0.9);
+      border-color: rgba(148,163,253,0.5);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(30,64,175,0.45);
+    }
+
+    .hero-right {
+      background: rgba(15,23,42,0.95);
+      border-radius: 20px;
+      border: 1px solid rgba(148,163,253,0.35);
+      padding: 14px 14px 12px;
+      box-shadow: 0 18px 40px rgba(15,23,42,0.85);
+      font-size: 12px;
+    }
+
+    .hero-right-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .hero-right-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .mini-card {
+      background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,64,175,0.8));
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid rgba(148,163,253,0.5);
+    }
+
+    .mini-card span.label {
+      font-size: 11px;
+      color: var(--muted);
+      display: block;
+    }
+
+    .mini-card h4 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .mini-card .value {
+      font-size: 13px;
+      color: #22c55e;
+      font-weight: 600;
+    }
+
+    .mini-note {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .mini-note strong {
+      color: #fbbf24;
+    }
+
+    /* SECTIONS GÉNÉRALES */
+
+    .section {
+      margin-top: 34px;
+    }
+
+    .section-title {
+      font-size: 19px;
+      margin-bottom: 6px;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    /* PRICING GRID */
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+
+    .price-card {
+      background: radial-gradient(circle at top left, rgba(148,163,253,0.18), transparent 55%),
+                  linear-gradient(145deg, #020617, #020617);
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.75);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .price-card h3 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .token-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,253,0.5);
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .price-tag {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #fbbf24;
+    }
+
+    .price-card p.desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .price-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .badge {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(56,189,248,0.12);
+      border: 1px solid rgba(56,189,248,0.6);
+      color: #7dd3fc;
+    }
+
+    /* COMMENT ÇA MARCHE */
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .step-card {
+      background: var(--bg-soft);
+      border-radius: var(--radius-lg);
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .step-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .step-number {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    /* PAIEMENT & SÉCURITÉ */
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--bg-soft);
+      border-radius: var(--radius-lg);
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .card h3 {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    .code-box {
+      background: #020617;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      border: 1px solid var(--border);
+    }
+
+    .alert {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--danger);
+    }
+
+    /* FAQ */
+
+    .faq-item {
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .faq-q {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .faq-a {
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 32px;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer a {
+      color: #38bdf8;
+    }
+
+    @media (max-width: 800px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .split-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-right {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <div class="logo">
+        <div class="logo-icon">D</div>
+        <div>
+          <div class="logo-text-title">DCA PulseChain Bot</div>
+          <div class="logo-text-sub">Suite de bots DCA pour PLS • HEX • ATROPA & co</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div>Créateur : <strong>@jhonivangonthi1</strong></div>
+        <div>Contact : <a href="mailto:whaletracker16@gmail.com">whaletracker16@gmail.com</a></div>
+      </div>
+    </header>
+
+    <!-- HERO -->
+
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-pill">
+          <div class="hero-pill-dot"></div>
+          Bots DCA 100% locaux – aucune clé envoyée en ligne
+        </div>
+
+        <h1 class="hero-title">
+          Accumule tes bags <span>PULSECHAIN</span> en DCA automatique.
+        </h1>
+
+        <p class="hero-subtitle">
+          Huit bots DCA dédiés aux principaux tokens PulseChain (HEX, eHEX, PHEX, ATROPA, PLSB, LOAN, INC, WPLS).  
+          Tu choisis ton montant en DAI / WPLS / PLS, le bot achète pour toi à intervalle régulier et sur les dips.
+        </p>
+
+        <div class="hero-grid">
+          <div class="hero-left">
+            <p>Chaque bot tourne depuis ton PC Windows, avec ton propre RPC PulseChain.</p>
+            <ul class="hero-list">
+              <li><span>✅</span> DCA « temps » + achat automatique sur DIP configurable.</li>
+              <li><span>✅</span> 1 bot par paire : plus simple à comprendre, plus sûr.</li>
+              <li><span>✅</span> Aucune clé privée envoyée en ligne, tout reste sur ta machine.</li>
+              <li><span>✅</span> Scripts commentés + fichier de config séparé.</li>
+            </ul>
+
+            <div class="hero-ctas">
+              <a href="https://x.com/jhonivangonthi1" target="_blank" class="btn-primary">
+                Commander via X (DM)
+              </a>
+              <a href="mailto:whaletracker16@gmail.com" class="btn-secondary">
+                Commander par Gmail
+              </a>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="hero-right-title">Vue rapide des bots DCA</div>
+            <div class="hero-right-grid">
+              <div class="mini-card">
+                <span class="label">Bots HEX / eHEX / PHEX</span>
+                <h4>HEX DCA Suite</h4>
+                <div class="value">3 bots dédiés</div>
+                <p>Accumulation automatique sur HEX (Pulse), eHEX et PHEX, avec DIP BUY.</p>
+              </div>
+              <div class="mini-card">
+                <span class="label">Bots ATROPA / LOAN / PLSB / INC</span>
+                <h4>Tokens de niche</h4>
+                <div class="value">4 bots DCA</div>
+                <p>Spécialement conçus pour les tokens volatils de l’écosystème Pulse.</p>
+              </div>
+            </div>
+            <p class="mini-note">
+              <strong>Prix :</strong> 19$ par bot – paiement en PLS.  
+              Demande en DM pour un tarif pack complet.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIX BOTS -->
+
+    <section class="section">
+      <h2 class="section-title">Les bots DCA disponibles</h2>
+      <p class="section-sub">
+        Chaque bot est livré avec son script Python, son <code>config_b.py</code> prêt à remplir et un lanceur Windows (.bat).  
+        Tu peux en prendre un seul ou plusieurs selon tes bags.
+      </p>
+
+      <div class="pricing-grid">
+
+        <div class="price-card">
+          <div class="token-pill">Pair : HEX / WPLS</div>
+          <h3>Bot DCA HEX / WPLS</h3>
+          <div class="price-tag">19$</div>
+          <p class="desc">
+            DCA automatique pour accumuler du HEX PulseChain en WPLS, avec achat sur DIP si le prix corrige.
+          </p>
+          <div class="price-footer">
+            <span>Montant DCA configuré en fonction de ton sac.</span>
+            <span class="badge">HEX</span>
+          </div>
+        </div>
+
+        <div class="price-card">
+          <div class="token-pill">Pair : eHEX / WPLS</div>
+          <h3>Bot DCA eHEX / WPLS</h3>
+          <div class="price-tag">19$</div>
+          <p class="desc">
+            Idéal pour lisser ton prix d’entrée sur le eHEX tout en profitant de la liquidité sur PulseX.
+          </p>
+          <div class="price-footer">
+            <span>DCA + DIP BUY avec seuil ajustable.</span>
+            <span class="badge">eHEX</span>
+          </div>
+        </div>
+
+        <div class="price-card">
+          <div class="token-pill">Pair : PHEX / WPLS</div>
+          <h3>Bot DCA PHEX / WPLS</h3>
+          <div class="price-tag">19$</div>
+          <p class="desc">
+            Conçu pour accumuler le PHEX (HEX natif PulseChain) quand le marché corrige ou à intervalle régulier.
+          </p>
+          <div class="price-footer">
+            <span>Compatible avec ton bot ratio HEX/PHEX.</span>
+            <span class="badge">PHEX</span>
+          </div>
+        </div>
+
+        <div class="price-card">
+          <div class="token-pill">Pair : ATROPA / DAI</div>
+          <h3>Bot DCA ATROPA / DAI</h3>
+          <div class="price-tag">19$</div>
+          <p class="desc">
+            DCA sur ATROPA payé en DAI, avec option d’achat agressif sur DIP (comme ton bot ATROPA existant mais orienté accumulation).
+          </p>
+          <div class="price-footer">
+            <span>Montant fixe en DAI à chaque cycle.</span>
+            <span class="badge">ATROPA</span>
+          </div>
+        </div>
+
+        <div class="price-card">
+          <div class="token-pill">Pair : PLSB / WPLS</div>
+          <h3>Bot DCA PLSB / WPLS</h3>
+          <div class="price-tag">19$</div>
+          <p class="desc">
+            Pour lisser ton entrée sur PulseBitcoin (PLSB) avec des achats PLS → PLSB réguliers.
+          </p>
+          <div class="price-footer">
+            <span>Utilise le routeur PulseX officiel.</span>
+            <span class="badge">PLSB</span>
+          </div>
+        </div>
+
+        <div class="price-card">
+          <div class="token-pill">Pair : LOAN / WPLS</div>
+          <h3>Bot DCA LOAN / WPLS</h3>
+          <div class="price-tag">19$</div>
+          <p class="desc">
+            Bot DCA spécialisé pour LOAN, pensé pour accumuler progressivement sans devoir surveiller le graphique.
+          </p>
+          <div class="price-footer">
+            <span>Intervalle et DIP ajustables.</span>
+            <span class="badge">LOAN</span>
+          </div>
+        </div>
+
+        <div class="price-card">
+          <div class="token-pill">Pair : INC / WPLS</div>
+          <h3>Bot DCA INC / WPLS</h3>
+          <div class="price-tag">19$</div>
+          <p class="desc">
+            Pour ceux qui croient fort en INC et veulent lisser le prix dans le temps et sur les corrections.
+          </p>
+          <div class="price-footer">
+            <span>Montant en WPLS paramétrable dans le config.</span>
+            <span class="badge">INC</span>
+          </div>
+        </div>
+
+        <div class="price-card">
+          <div class="token-pill">Pair : PLS / HEX (exemple)</div>
+          <h3>Bot DCA PLS / HEX</h3>
+          <div class="price-tag">19$</div>
+          <p class="desc">
+            Bot DCA pour accumuler du PLS ou du HEX en fonction de la paire que tu souhaites privilégier.
+          </p>
+          <div class="price-footer">
+            <span>Idéal pour ceux qui stackent le natif PLS.</span>
+            <span class="badge">PLS</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- COMMENT ÇA MARCHE -->
+
+    <section class="section">
+      <h2 class="section-title">Comment ça marche concrètement ?</h2>
+      <p class="section-sub">
+        Le principe est simple : tu configures le montant à investir en DAI / WPLS / PLS, l’intervalle de temps, 
+        et éventuellement le pourcentage de DIP pour renforcer sur les baisses.
+      </p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">Étape 1</div>
+          <div class="step-title">Tu choisis ton ou tes bots</div>
+          <p>
+            Tu m’écris en DM sur X (<strong>@jhonivangonthi1</strong>) ou par mail.  
+            Tu me dis sur quelles paires tu veux un DCA (HEX, eHEX, PHEX, ATROPA, etc.).
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">Étape 2</div>
+          <div class="step-title">Paiement en PLS</div>
+          <p>
+            Tu envoies le paiement en PLS (19$ par bot) sur l’adresse fournie, puis tu m’envoies ton TX hash.  
+            Dès que c’est confirmé, je t’envoie ton pack par mail ou DM.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">Étape 3</div>
+          <div class="step-title">Configuration & lancement</div>
+          <p>
+            Tu remplis ton <code>config_b.py</code> avec ton wallet, ta clé privée, ton montant de DCA, 
+            puis tu lances le fichier <code>Lancer_DCA_...</code> sur ton PC.  
+            Le bot affiche chaque achat dans la console.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAIEMENT & SÉCURITÉ -->
+
+    <section class="section">
+      <div class="split-grid">
+        <div class="card">
+          <h3>Paiement & livraison</h3>
+          <p>
+            <strong>Prix :</strong> 19$ par bot (paiement en PLS).  
+            Tu peux aussi me demander un prix pack si tu veux plusieurs bots DCA d’un coup.
+          </p>
+          <p>
+            Après paiement, tu reçois :
+          </p>
+          <ul style="padding-left: 18px; margin-bottom: 6px;">
+            <li>le script Python du bot,</li>
+            <li>un fichier <code>config_b.py</code> à remplir,</li>
+            <li>un lanceur Windows (<code>.bat</code>),</li>
+            <li>un petit guide texte avec les étapes.</li>
+          </ul>
+          <p class="code-box">
+            Adresse PulseChain (PLS) :  
+            0xA7C0CEAba50228737B2f4BB88FC1B196Bd4c596
+          </p>
+          <p class="alert">
+            ⚠️ Toujours vérifier l’adresse avec moi en DM avant d’envoyer un gros montant.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Sécurité : où va ta clé privée ?</h3>
+          <p>
+            Les bots fonctionnent comme tes bots AutoPilot actuels : 
+            ta clé privée reste dans <code>config_b.py</code> sur ta machine, 
+            utilisée uniquement par Web3 pour signer les transactions.
+          </p>
+          <p>
+            Aucun envoi en ligne : pas d’API externe, pas de serveur, pas de site web qui reçoit ta clé.
+          </p>
+          <p>
+            Tu restes 100% propriétaire de ton wallet. Le risque principal reste le même que d’habitude : 
+            protéger ton PC, ton fichier, et ne jamais partager ta clé.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+
+    <section class="section">
+      <h2 class="section-title">FAQ rapide</h2>
+
+      <div class="faq-item">
+        <div class="faq-q">Est-ce que les performances sont garanties ?</div>
+        <div class="faq-a">
+          Non. Le DCA est une stratégie pour lisser le prix dans le temps, pas une promesse de profit.  
+          Tu restes entièrement responsable de tes fonds et de tes réglages.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Est-ce que je peux modifier les paramètres moi-même ?</div>
+        <div class="faq-a">
+          Oui, tu peux changer l’intervalle de DCA, le montant, et le pourcentage de DIP directement 
+          dans le fichier <code>config_b.py</code>. Si tu as un doute, tu peux m’écrire en DM.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Est-ce que ça tourne sur Mac ?</div>
+        <div class="faq-a">
+          Le pack est pensé d’abord pour Windows (avec fichiers .bat), mais les scripts Python 
+          fonctionnent aussi sur Mac et Linux si tu sais lancer Python en ligne de commande.
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Projet indépendant, non affilié officiellement à PulseChain, PulseX ou HEX.</p>
+      <p>Besoin d’aide ? Écris-moi sur X : <a href="https://x.com/jhonivangonthi1" target="_blank">@jhonivangonthi1</a></p>
+    </footer>
+  </div>
+</body>
+</html>
